@@ -1,0 +1,84 @@
+# Task Management API
+
+This is a simple Task Management API with basic CRUD operations for managing tasks and user authentication.
+
+## Swagger Documentation
+
+The API documentation is available via Swagger UI. You can access it locally by following these steps:
+
+1. Make sure you have the API running on your local machine.
+2. Open your web browser and navigate to [https://localhost:5000/api-docs](https://localhost:5000/api-docs).
+3. You will be redirected to the Swagger UI page where you can explore and test the API endpoints.
+
+### Authorization in Swagger
+
+To authorize in Swagger:
+
+1. Open Swagger in a browser.
+2. Generate an authorization token by logging in or registering a user and copy it.
+3. Click the **Authorize** button.
+4. In the **Value** field, paste just the authorization token.
+5. Click **Authorize**.
+6. Try to use the "Try it out" option for one of the API calls.
+
+## Usage
+
+To use the Task Management API, follow these steps:
+
+1. Clone the repository to your local machine.
+2. Open the project in your preferred IDE.
+3. Build and run the project.
+4. Once the API is running, you can access the Swagger UI by navigating to [https://localhost:5000/api-docs](https://localhost:5000/api-docs).
+5. Use the provided endpoints to perform various operations related to task management and user authentication.
+
+Please note that you may need to configure the API settings, such as the database connection string, before running the code.
+
+## Endpoints
+
+### Get all tasks
+
+- **GET** `/api/tasks/allTasks`
+
+Retrieves all tasks.
+
+### Get a specific task
+
+- **GET** `/api/tasks/task/{id}`
+
+Retrieves a specific task by ID.
+
+### Create a new task
+
+- **POST** `/api/tasks/new`
+
+Creates a new task.
+
+### Update a task
+
+- **PUT** `/api/tasks/updateTask/{id}`
+
+Updates a task by ID.
+
+### Delete a task
+
+- **DELETE** `/api/tasks/delete/{id}`
+
+Deletes a task by ID.
+
+### Get tasks by user
+
+- **GET** `/api/tasks/user/{userId}/tasks`
+
+Retrieves tasks by user ID.
+
+### Register a new user
+
+- **POST** `/api/auth/register`
+
+Registers a new user.
+
+### Login
+
+- **POST** `/api/auth/login`
+
+Logs in a user.

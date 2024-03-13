@@ -1,0 +1,335 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Task API",
+      "description": "Sample Task Management API with Basic CRUD operations",
+      "version": "1.0.0"
+    },
+    "components": {
+      "schemas": {
+        "Task": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Name of the task"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the task"
+            },
+            "completed": {
+              "type": "boolean",
+              "description": "Completion status of the task"
+            },
+            "user": {
+              "type": "string",
+              "description": "ID of the user to whom the task belongs"
+            }
+          }
+        },
+        "NewTask": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Name of the task"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the task"
+            },
+            "completed": {
+              "type": "boolean",
+              "description": "Completion status of the task"
+            },
+            "user": {
+              "type": "string",
+              "description": "ID of the user to whom the task belongs"
+            }
+          },
+          "required": ["title", "user"]
+        },
+        "UpdateTaskInput": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Name of the task"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the task"
+            },
+            "completed": {
+              "type": "boolean",
+              "description": "Completion status of the task"
+            }
+          }
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string",
+              "description": "Username of the new user"
+            },
+            "email": {
+              "type": "string",
+              "description": "Email of the new user"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password of the new user"
+            }
+          },
+          "required": ["username", "email", "password"]
+        },
+        "Login": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "Email of the user"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password of the user"
+            }
+          },
+          "required": ["email", "password"]
+        }
+      }
+    },
+    "paths": {
+      "/api/auth/register": {
+        "post": {
+          "summary": "Register a new user",
+          "description": "Endpoint to register a new user",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User registered successfully"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/api/auth/login": {
+        "post": {
+          "summary": "Login",
+          "description": "Endpoint to login and obtain a JWT token",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "description": "JWT token"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/api/tasks/allTasks": {
+        "get": {
+          "summary": "Get all tasks",
+          "description": "Endpoint to retrieve all tasks",
+          "parameters": [
+            {
+              "name": "completed",
+              "in": "query",
+              "description": "Filter tasks by completion status",
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "sortOrder",
+              "in": "query",
+              "description": "Sort order (asc/desc)",
+              "schema": {
+                "type": "string",
+                "enum": ["asc", "desc"]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Task"
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/api/tasks/task/{id}": {
+        "get": {
+          "summary": "Get a specific task",
+          "description": "Endpoint to retrieve a specific task by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of the task",
+              "example": "65f1b19086e0163582d20be3"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Task"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Task not found"
+            }
+          }
+        }
+      },
+      "/api/tasks/new": {
+        "post": {
+          "summary": "Create a new task",
+          "description": "Endpoint to create a new task",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewTask"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Task created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Task"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      },
+      "/api/tasks/delete/{id}": {
+        "delete": {
+          "summary": "Delete a task",
+          "description": "Endpoint to delete a task by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of the task"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Task deleted successfully"
+            },
+            "404": {
+              "description": "Task not found"
+            }
+          }
+        }
+      },
+      "/api/tasks/updatetask/{taskId}/": {
+        "put": {
+          "summary": "Update a task by user",
+          "description": "Endpoint to update a task by user ID",
+          "parameters": [
+            {
+              "name": "taskId",
+              "in": "path",
+              "required": true,
+              "description": "ID of the task"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTaskInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Task"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "User not found"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          }
+        }
+      }
+    }
+  }
